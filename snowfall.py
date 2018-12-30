@@ -20,9 +20,10 @@ def main(stdscr):
 	curses.curs_set(False)
 	running = True
 	maxYX = stdscr.getmaxyx()
-	snowArr = initSnowflakes(10,maxYX[1])
+	snowArr = initSnowflakes(1,maxYX[1])
 	while running:
 		stdscr.clear() 
+		stdscr.addstr(0,0, str(maxYX[0]) +" "+ str(maxYX[1]))
 		moveSnowFlakes(snowArr,maxYX)
 		drawSnowflakes(snowArr, stdscr)
 		stdscr.refresh()
@@ -37,10 +38,12 @@ def main(stdscr):
 	stdscr.getkey()
 
 def moveSnowFlakes(snowArr, maxYX):
+##Check if a snowflake is beyond screen limits (maxYX) and 
+##Move it if it is.  (Currently only checks the Y value)
 	for sf in snowArr:
 		if sf.posY > maxYX[0]-1:
-                         sf =  snowflake(0,choice(range(0,maxYX[1])))
-			
+			sf.posY = 0
+			sf.posX = choice(range(0, maxYX[1]))
 		sf.posY +=1;
 
 def initSnowflakes(i, maxX):
@@ -50,9 +53,7 @@ def initSnowflakes(i, maxX):
 	return snowArr
 
 def drawSnowflakes(snowArr,stdscr):
-	removeSnowflakes = list()
-	##If Snowflake not on screen reset it to the top of the screen
 	for sf in snowArr:
-		stdscr.addstr(sf.posY,sf.posX,"*")
-wrapper(main)	
+		stdscr.addstr(sf.posY,sf.posX,str(sf.posY))
 
+wrapper(main)	
